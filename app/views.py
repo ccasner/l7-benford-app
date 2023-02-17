@@ -99,9 +99,16 @@ plotdata = pd.DataFrame({
 
     "Actual": actual})
 
-plotdata.plot(kind="bar",figsize=(15, 8))
-plt.title("Benford's Law vs. Actual Counts")
-plt.xlabel("Leading Digit")
-plt.ylabel("Total Count")
-plt.show()
+plotdata.plot(
+    kind="bar",
+    figsize=(15, 8),
+    title = "Benford's Law vs. Actual Counts",
+    xlabel = "Leading Digit",
+    ylabel = "Total Count"
+    )
+    
+plt.plot(data=plotdata)
+plt.savefig('app/static/images/new_plot.png')
+
+
 
