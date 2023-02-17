@@ -92,7 +92,6 @@ def get_expected_counts():
 # Create bar graph comparing results 
 benford = get_expected_counts()
 actual = get_actual_counts()
-# index = [1,2,3,4,5,6,7,8,9]
 
 plotdata = pd.DataFrame({
 
@@ -101,5 +100,8 @@ plotdata = pd.DataFrame({
     "Actual": actual})
 
 plotdata.plot(kind="bar",figsize=(15, 8))
+plt.title("Benford's Law vs. Actual Counts")
+plt.xlabel("Leading Digit")
+plt.ylabel("Total Count")
 plt.show()
 
