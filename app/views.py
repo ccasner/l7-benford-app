@@ -1,6 +1,10 @@
-from flask import Flask, render_template, request
+import base64
+import io
+from flask import Flask, render_template, request, Response
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 import numpy as np
 from . import app
 
@@ -9,13 +13,18 @@ from . import app
 def home():
     return render_template("home.html")
 
+@app.route("/example")
+def example():
+    return render_template("example.html")
 
-# @app.route('/upload', methods=['GET', 'POST'])
-# def upload():
-#     if request.method == 'POST':
-#         data = pd.read_csv(request.files.get('file'), sep='\t')
-#         return render_template('upload.html', tables=[data.to_html()], titles=[''])
-#     return render_template('upload.html')
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        data = pd.read_csv(request.files.get('file'), sep='\t')
+        return render_template('upload.html', tables=[data.to_html()], titles=[''])
+    return render_template('upload.html')
+
+
 
 
 @app.route('/show_data', methods=['GET', 'POST'])
@@ -44,6 +53,7 @@ def show_data():
 
         return render_template('show_data.html', tables=[data.to_html()], titles=[''])
     return render_template('show_data.html')
+
 
 
 # Returns pandas series containing actual counts for each leading digit

@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Show Data</title>
-</head>
-<body>
-<form method=post enctype=multipart/form-data>
-    <input type=file name=file>
-    <input type=submit value=Upload>
-</form>
+{% extends "layout.html" %}
+{% block title %}
+Show Data
+{% endblock %}
+{% block content %}
 
-<div align="center">
-    <table>
-        <h1>
-             {% for table in tables %}
-            <h2>{{titles[loop.index]}}</h2>                            
-            {{ table|safe }}
-            {% endfor %}     
-        </h1> 
-    </table>
-</div>
-</body>
-</html>
+<img src="/static/images/new_plot.png" alt="Chart" height="800" width="1500">
+{% endblock %}

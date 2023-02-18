@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Upload</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block title %}
+Upload
+{% endblock %}
+{% block content %}
+
 <form method=post enctype=multipart/form-data>
     <input type=file name=file>
     <input type=submit value=Upload>
 </form>
 
-<form method=post enctype=multipart/form-data>
-    <input type=file name=file>
-    <input type=submit value=Upload>
+<form action="/show_data">
+    <label for="column">Column:</label>
+    <input type=text name=text>
+    <input type="submit" value="Submit">
 </form>
 
 <div align="center">
@@ -25,5 +25,6 @@
         </h1> 
     </table>
 </div>
-</body>
-</html>
+{% endblock %}
+
+
