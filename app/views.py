@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 from . import app
 
 
@@ -83,32 +84,63 @@ def get_expected_counts():
 
     benford_percentages = [.301, .176, .125, .097, .079, .067, .058, .051, .046]
     print('BEFORE: ', benford_percentages)
-    benford_results = [i * df.size for i in benford_percentages]
+    benford_results = [(i * df.size).round() for i in benford_percentages]
     print('AFTER: ', benford_results)
 
     return benford_results
 
 
 # Create bar graph comparing results 
+# benford = get_expected_counts()
+# actual = get_actual_counts().to_numpy()
+
+# plotdata = pd.DataFrame({
+
+#     "Benford": benford,
+
+#     "Actual": actual})
+
+# plotdata.plot(
+#     kind="bar",
+#     figsize=(15, 8),
+#     title = "Benford's Law vs. Actual Counts",
+#     xlabel = "Leading Digit",
+#     ylabel = "Total Count"
+#     )
+
+
+# plt.plot(data=plotdata)
+# plt.savefig('app/static/images/new_plot.png')
+# # plt.show()
+
+
 benford = get_expected_counts()
-actual = get_actual_counts()
+actual = get_actual_counts().to_numpy()
 
-plotdata = pd.DataFrame({
-
+digits = (1,2,3,4,5,6,7,8,9)
+plotdata = {
     "Benford": benford,
+    "Actual": actual
+}
 
-    "Actual": actual})
+x = np.arange(len(benford))  # the label locations
+width = 0.3  # the width of the bars
+multiplier = 0
 
-plotdata.plot(
-    kind="bar",
-    figsize=(15, 8),
-    title = "Benford's Law vs. Actual Counts",
-    xlabel = "Leading Digit",
-    ylabel = "Total Count"
-    )
-    
-plt.plot(data=plotdata)
-plt.savefig('app/static/images/new_plot.png')
+fig, ax = plt.subplots(figsize=(15, 8))
 
+for attribute, measurement in plotdata.items():
+    offset = width * multiplier
+    rects = ax.bar(x + offset, measurement, width, label=attribute)
+    ax.bar_label(rects, padding=3)
+    multiplier += 1
 
+ax.set_xlabel("Leading Digit")
+ax.set_ylabel("Total Count")
+ax.set_title("Benford's Law vs. Actual Counts")
+ax.set_xticks(x + 0.15, digits)
+ax.legend(loc='upper right', ncols=3)
 
+fig.savefig('app/static/images/new_plot.png', dpi=200)
+
+# plt.show()
