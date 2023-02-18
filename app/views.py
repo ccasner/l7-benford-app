@@ -20,7 +20,12 @@ def example():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
-        data = pd.read_csv(request.files.get('file'), sep='\t')
+        column = request.form['text']
+        try:
+            data = pd.read_csv(request.files.get('file'), usecols=[column], sep='\t', engine='python')
+        except ValueError:
+            message = 'Column not found, please try again'
+            return render_template('upload_error.html', message=message)
         return render_template('upload.html', tables=[data.to_html()], titles=[''])
     return render_template('upload.html')
 
