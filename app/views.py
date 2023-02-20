@@ -159,3 +159,8 @@ ax.legend(loc='upper right', ncols=3)
 fig.savefig('app/static/images/new_plot.png', dpi=200)
 
 # plt.show()
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+    
