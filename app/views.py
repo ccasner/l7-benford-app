@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import numpy as np
+
+from app.show_graph import CreateGraph
 from . import app
 
 
@@ -22,7 +24,10 @@ def upload():
     if request.method == 'POST':
         column = request.form['text']
         try:
-            data = pd.read_csv(request.files.get('file'), usecols=[column], sep='\t', engine='python')
+            data = pd.read_csv(request.files.get('file'), usecols=[column], sep=',', engine='python')
+
+            image = CreateGraph(data, column).create_graph_image()
+
         except ValueError:
             message = 'Column not found, please try again'
             return render_template('upload_error.html', message=message)
@@ -34,30 +39,31 @@ def upload():
 
 @app.route('/show_data', methods=['GET', 'POST'])
 def show_data():
-    if request.method == 'POST':
+    if request.method == 'GET':
 
-        col_to_sort = '7_2009'
-        data = pd.read_csv(request.files.get('file'), sep='\t', usecols=[col_to_sort])
+        image = '/static/images/plot.png'
 
-        list_of_firsts = []
-        for num in data[col_to_sort].values:
-            # convert num to str to get first digit, return as int
-            first_num = int(str(num)[0])
-            # add digits to list of all firsts
-            list_of_firsts.append(first_num)
+        # return render_template('show_data.html', url=image)
 
-        # convert list to pandas series
-        sr = pd.Series(list_of_firsts)
-        # Print the series
-        print(sr)
-        # Print the value counts for each digit in the series
-        print(sr.value_counts())
-        sr_counts = sr.value_counts()
-        data = sr_counts.to_frame()
-        # create_graph()
+    #     list_of_firsts = []
+    #     for num in data[col_to_sort].values:
+    #         # convert num to str to get first digit, return as int
+    #         first_num = int(str(num)[0])
+    #         # add digits to list of all firsts
+    #         list_of_firsts.append(first_num)
 
-        return render_template('show_data.html', tables=[data.to_html()], titles=[''])
-    return render_template('show_data.html')
+    #     # convert list to pandas series
+    #     sr = pd.Series(list_of_firsts)
+    #     # Print the series
+    #     print(sr)
+    #     # Print the value counts for each digit in the series
+    #     print(sr.value_counts())
+    #     sr_counts = sr.value_counts()
+    #     data = sr_counts.to_frame()
+    #     # create_graph()
+
+        return render_template('show_data.html', url=image)
+    # return render_template('show_data.html')
 
 
 
@@ -163,4 +169,3 @@ fig.savefig('app/static/images/new_plot.png', dpi=200)
 
 if __name__ == "__main__":
     app.run(debug=True)
-    

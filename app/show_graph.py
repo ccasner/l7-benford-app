@@ -9,9 +9,13 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import numpy as np
 
-plt.ioff
-matplotlib.use('MacOSX')
-matplotlib.interactive(False)
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+# plt.ioff
+# matplotlib.use('MacOSX')
+# matplotlib.interactive(False)
 
 
 class CreateGraph:
@@ -76,13 +80,13 @@ class CreateGraph:
         ax.set_xticks(x + 0.15, digits)
         ax.legend(loc='upper right', ncols=3)
 
-        fig.savefig('app/static/images/new_plot.png', dpi=200)
+        fig.savefig('app/static/images/plot.png', dpi=200)
 
 
     # Returns pandas series containing actual counts for each leading digit
     def get_actual_counts(self):
 
-        col_to_sort = '7_2009'
+        col_to_sort = self.column
 
         df = self.data
 
