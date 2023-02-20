@@ -1,9 +1,13 @@
 import csv
+import os
 from flask import render_template, request
 import pandas as pd
 
 from app.show_graph import CreateGraph
 from . import app
+
+UPLOAD_FOLDER = 'app/static/files/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 
 
 @app.route("/")
@@ -22,15 +26,14 @@ def upload():
         try:
             uploaded_file = request.files.get('file')
             if uploaded_file.filename != '':
-                uploaded_file.save(uploaded_file.filename)
-        
-            with open(uploaded_file.filename, newline='') as csvfile:
-                dialect = csv.Sniffer().sniff(csvfile.readline())
-                csvfile.seek(0)
-                data = pd.read_csv(uploaded_file.filename, usecols=[column], sep=dialect.delimiter, engine='python')
-                # CreateGraph(data, column).create_graph_image()
-                CreateGraph(data, column).process_data()
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+                uploaded_file.save(file_path)
 
+                with open(file_path, newline='') as csvfile:
+                    dialect = csv.Sniffer().sniff(csvfile.readline())
+                    csvfile.seek(0)
+                    data = pd.read_csv(file_path, usecols=[column], sep=dialect.delimiter, engine='python')
+                    CreateGraph(data, column).process_data()
 
         except ValueError:
             message = 'Column not found, please try again'
