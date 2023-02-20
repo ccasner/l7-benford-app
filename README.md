@@ -10,13 +10,10 @@ Stretch challenge: The delivered package should contain a docker file that allo
 
 
 ## Languages and Frameworks
-Python 3.10
-
-Flask 2.2
-
-Docker
-
-Graph images are created using Pandas and Matplotlib libraries
+- Python 3.10
+- Flask 2.2
+- Docker
+- Graph images are created using Pandas and Matplotlib libraries
 
 ## Application Functionality - Endpoints
 ### HOME - /
