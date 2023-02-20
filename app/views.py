@@ -28,7 +28,8 @@ def upload():
                 dialect = csv.Sniffer().sniff(csvfile.readline())
                 csvfile.seek(0)
                 data = pd.read_csv(uploaded_file.filename, usecols=[column], sep=dialect.delimiter, engine='python')
-                CreateGraph(data, column).create_graph_image()
+                # CreateGraph(data, column).create_graph_image()
+                CreateGraph(data, column).process_data()
 
 
         except ValueError:
@@ -39,13 +40,11 @@ def upload():
     return render_template('upload.html')
 
 
-@app.route('/show_data', methods=['GET', 'POST'])
+@app.route('/show_data')
 def show_data():
-    if request.method == 'GET':
 
-        image = '/static/images/plot.png'
+    image = '/static/images/plot.png'
 
-        return render_template('show_data.html', url=image)
     return render_template('show_data.html', url=image)
 
 
